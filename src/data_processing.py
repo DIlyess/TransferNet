@@ -35,6 +35,7 @@ class DataProcessing:
         ]
         agg_dict = {
             "transfer_fee_amnt": "sum",
+            "is_loan": "mean",
         }
         rename_dict = {
             "transfer_fee_amnt": "total_fee",

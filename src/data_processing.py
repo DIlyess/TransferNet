@@ -23,6 +23,10 @@ class DataProcessing:
         self.df["same_country"] = (
             self.df["team_country"] == self.df["counter_team_country"]
         )
+        self.df = self.df[
+            (self.df["team_name"] != "Without Club")
+            & (self.df["counter_team_name"] != "Without Club")
+        ]
         return self.df
 
     @staticmethod

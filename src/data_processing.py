@@ -20,6 +20,9 @@ class DataProcessing:
         self.df = self.remove_duplicate_transfer(self.df)
         self.df = self.in2out_transfer(self.df)
         self.df = self.aggregate_club_level(self.df)
+        self.df["same_country"] = (
+            self.df["team_country"] == self.df["counter_team_country"]
+        )
         return self.df
 
     @staticmethod

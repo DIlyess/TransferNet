@@ -1,9 +1,12 @@
 import networkx as nx
 import numpy as np
-from collections import defaultdict
-
 import pandas as pd
-from sklearn.model_selection import train_test_split
+import random
+import matplotlib.pyplot as plt
+
+from collections import defaultdict
+from scipy.stats import uniform, randint
+from sklearn.model_selection import train_test_split, RandomizedSearchCV
 from sklearn.ensemble import RandomForestClassifier, GradientBoostingClassifier
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import (
@@ -12,11 +15,10 @@ from sklearn.metrics import (
     recall_score,
     f1_score,
     roc_auc_score,
+    make_scorer,
 )
 from sklearn.preprocessing import StandardScaler
-import matplotlib.pyplot as plt
 from node2vec import Node2Vec
-import random
 from tqdm import tqdm
 
 
@@ -106,17 +108,6 @@ class TransferGraphDataProcessor:
         max_attempts = num_samples * 10
         attempts = 0
 
-        # Define boundaries for sampling the attributes
-        attribute_values = defaultdict(list)
-        for u, v, attrs in graph.edges(data=True):
-            for key, value in attrs.items():
-                attribute_values[key].append(value)
-
-        # Calculate min and max for each attribute
-        attribute_ranges = {
-            key: (min(values), max(values)) for key, values in attribute_values.items()
-        }
-
         while len(non_edges) < num_samples and attempts < max_attempts:
             u = random.choice(nodes)
             v = random.choice(nodes)
@@ -124,10 +115,10 @@ class TransferGraphDataProcessor:
             # Skip self-loops and existing edges
             if u != v and not graph.has_edge(u, v):
                 # create random attributes for the non-edge
-                random_attrs = {}
-                for key, (min_val, max_val) in attribute_ranges.items():
-                    random_attrs[key] = random.uniform(min_val, max_val)
-                non_edges.append((u, v, random_attrs))
+                # random_attrs = {}
+                # for key, (min_val, max_val) in attribute_ranges.items():
+                #     random_attrs[key] = random.uniform(min_val, max_val)
+                non_edges.append((u, v, None))
 
             attempts += 1
 
@@ -150,11 +141,13 @@ class TransferGraphDataProcessor:
             in_degree = dict(self.train_graph.in_degree())
             out_degree = dict(self.train_graph.out_degree())
 
-            for node in self.train_graph.nodes():
+            for node, node_attr in self.train_graph.nodes(data=True):
                 features[node] = {
                     "in_degree": in_degree.get(node, 0),
                     "out_degree": out_degree.get(node, 0),
                 }
+
+                features[node]["country"] = node_attr.get("country", "Unknown")
 
                 # Additional structural features
                 neighbors = list(self.train_graph.neighbors(node))
@@ -250,17 +243,19 @@ class TransferGraphDataProcessor:
 
         # Basic node feature combinations
         features = {}
-
+        features["same_country"] = int(
+            u_features.get("country") == v_features.get("country")
+        )
         # Iterate through all features and create combinations
         for key in set(u_features.keys()) | set(v_features.keys()):
             u_val = u_features.get(key, 0)
             v_val = v_features.get(key, 0)
-
-            features[f"u_{key}"] = u_val
-            features[f"v_{key}"] = v_val
-            features[f"diff_{key}"] = u_val - v_val
-            features[f"sum_{key}"] = u_val + v_val
-            features[f"product_{key}"] = u_val * v_val
+            if isinstance(u_val, (int, float)) and isinstance(v_val, (int, float)):
+                features[f"u_{key}"] = u_val
+                features[f"v_{key}"] = v_val
+                features[f"diff_{key}"] = u_val - v_val
+                features[f"sum_{key}"] = u_val + v_val
+                features[f"product_{key}"] = u_val * v_val
 
         # Graph-based edge features
         # Ensure nodes exist in the graph
@@ -329,7 +324,6 @@ class TransferGraphDataProcessor:
 
         # Generate negative examples for training (ensure we really do generate negatives)
         print("Generating negative examples for training...")
-        train_neg_edges = []
 
         train_neg_edges = self._generate_negative_examples(
             self.train_graph, len(train_pos_edges)
@@ -459,7 +453,7 @@ class TransferEdgePrediction:
 
     def train_models(self, X_train, y_train, feature_names=None):
         """
-        Train multiple models for edge prediction.
+        Train multiple models for edge prediction using wide hyperparameter tuning.
 
         Parameters:
             - X_train : Training features
@@ -469,32 +463,69 @@ class TransferEdgePrediction:
         Returns:
             - self
         """
-        print("Training models...")
+        print("Training models with hyperparameter tuning...")
         self.feature_names = feature_names
+        self.models = {}
 
-        # Verify we have both classes in the training data
-        unique_classes = np.unique(y_train)
-        if len(unique_classes) < 2:
-            raise ValueError(
-                f"Training data only contains class {unique_classes[0]}. Need both 0 and 1 for training."
-            )
+        scoring = make_scorer(f1_score, average="binary")
 
-        # Logistic Regression
-        lr = LogisticRegression(max_iter=1000, random_state=42, class_weight="balanced")
+        # Logistic Regression - wide tuning
+        lr_params = {
+            "C": uniform(0.01, 100),
+        }
+        lr = RandomizedSearchCV(
+            LogisticRegression(max_iter=1000, random_state=42, class_weight="balanced"),
+            param_distributions=lr_params,
+            n_iter=20,
+            scoring=scoring,
+            cv=5,
+            random_state=42,
+            n_jobs=-1,
+        )
         lr.fit(X_train, y_train)
-        self.models["logistic_regression"] = lr
+        self.models["logistic_regression"] = lr.best_estimator_
 
-        # Random Forest
-        rf = RandomForestClassifier(
-            n_estimators=100, random_state=42, class_weight="balanced"
+        # Random Forest - wide tuning
+        rf_params = {
+            "n_estimators": randint(50, 300),
+            "max_depth": [None] + list(range(5, 30)),
+            "min_samples_split": randint(2, 10),
+            "min_samples_leaf": randint(1, 10),
+            "max_features": ["sqrt", "log2", None],
+        }
+        rf = RandomizedSearchCV(
+            RandomForestClassifier(random_state=42, class_weight="balanced"),
+            param_distributions=rf_params,
+            n_iter=20,
+            scoring=scoring,
+            cv=5,
+            random_state=42,
+            n_jobs=-1,
         )
         rf.fit(X_train, y_train)
-        self.models["random_forest"] = rf
+        self.models["random_forest"] = rf.best_estimator_
 
-        # Gradient Boosting
-        gb = GradientBoostingClassifier(n_estimators=100, random_state=42)
+        # Gradient Boosting - wide tuning
+        gb_params = {
+            "n_estimators": randint(50, 300),
+            "learning_rate": uniform(0.01, 0.3),
+            "max_depth": randint(3, 10),
+            "subsample": uniform(0.5, 0.5),
+            "min_samples_split": randint(2, 10),
+            "min_samples_leaf": randint(1, 10),
+            "max_features": ["sqrt", "log2", None],
+        }
+        gb = RandomizedSearchCV(
+            GradientBoostingClassifier(random_state=42),
+            param_distributions=gb_params,
+            n_iter=20,
+            scoring=scoring,
+            cv=5,
+            random_state=42,
+            n_jobs=-1,
+        )
         gb.fit(X_train, y_train)
-        self.models["gradient_boosting"] = gb
+        self.models["gradient_boosting"] = gb.best_estimator_
 
         return self
 

@@ -1,24 +1,25 @@
+import random
+from collections import defaultdict
+
+import matplotlib.pyplot as plt
 import networkx as nx
 import numpy as np
 import pandas as pd
-import random
-import matplotlib.pyplot as plt
 
-from collections import defaultdict
-from scipy.stats import uniform, randint
-from sklearn.model_selection import train_test_split, RandomizedSearchCV
-from sklearn.ensemble import RandomForestClassifier, GradientBoostingClassifier
+# from node2vec import Node2Vec
+from scipy.stats import randint, uniform
+from sklearn.ensemble import GradientBoostingClassifier, RandomForestClassifier
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import (
     accuracy_score,
+    f1_score,
+    make_scorer,
     precision_score,
     recall_score,
-    f1_score,
     roc_auc_score,
-    make_scorer,
 )
+from sklearn.model_selection import RandomizedSearchCV, train_test_split
 from sklearn.preprocessing import StandardScaler
-from node2vec import Node2Vec
 from tqdm import tqdm
 
 
@@ -185,38 +186,38 @@ class TransferGraphDataProcessor:
                     if d.get("is_loan", False)
                 ) / max(1, len(in_transfers))
 
-        if method in ["node2vec", "both"]:
-            # Generate node2vec embeddings
-            try:
-                node2vec = Node2Vec(
-                    self.train_graph,
-                    dimensions=64,
-                    walk_length=30,
-                    num_walks=200,
-                    workers=4,
-                )
-                model = node2vec.fit(window=10, min_count=1)
+        # if method in ["node2vec", "both"]:
+        #     # Generate node2vec embeddings
+        #     try:
+        #         node2vec = Node2Vec(
+        #             self.train_graph,
+        #             dimensions=64,
+        #             walk_length=30,
+        #             num_walks=200,
+        #             workers=4,
+        #         )
+        #         model = node2vec.fit(window=10, min_count=1)
 
-                # Add embeddings to features
-                for node in self.train_graph.nodes():
-                    if node in model.wv:
-                        if method == "node2vec":
-                            features[node] = {
-                                f"emb_{i}": val for i, val in enumerate(model.wv[node])
-                            }
-                        else:  # method == 'both'
-                            for i, val in enumerate(model.wv[node]):
-                                features[node][f"emb_{i}"] = val
-                    else:
-                        # Handle nodes not in embeddings
-                        if method == "node2vec":
-                            features[node] = {f"emb_{i}": 0.0 for i in range(64)}
-                        else:  # method == 'both'
-                            for i in range(64):
-                                features[node][f"emb_{i}"] = 0.0
-            except Exception as e:
-                print(f"Warning: Could not generate node2vec embeddings. Error: {e}")
-                print("Falling back to structural features only.")
+        #         # Add embeddings to features
+        #         for node in self.train_graph.nodes():
+        #             if node in model.wv:
+        #                 if method == "node2vec":
+        #                     features[node] = {
+        #                         f"emb_{i}": val for i, val in enumerate(model.wv[node])
+        #                     }
+        #                 else:  # method == 'both'
+        #                     for i, val in enumerate(model.wv[node]):
+        #                         features[node][f"emb_{i}"] = val
+        #             else:
+        #                 # Handle nodes not in embeddings
+        #                 if method == "node2vec":
+        #                     features[node] = {f"emb_{i}": 0.0 for i in range(64)}
+        #                 else:  # method == 'both'
+        #                     for i in range(64):
+        #                         features[node][f"emb_{i}"] = 0.0
+        #     except Exception as e:
+        #         print(f"Warning: Could not generate node2vec embeddings. Error: {e}")
+        #         print("Falling back to structural features only.")
 
         self.node_features = features
 

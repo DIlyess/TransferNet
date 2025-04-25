@@ -1,0 +1,509 @@
+{
+    "basic": {
+        "nodes": 1131,
+        "edges": 3651,
+        "density": 0.0028567404521020632,
+        "is_strongly_connected": false,
+        "number_strongly_connected_components": 604,
+        "is_weakly_connected": true,
+        "number_weakly_connected_components": 1
+    },
+    "connectivity": {
+        "largest_wcc_size": 1131,
+        "largest_wcc_percentage": 100.0,
+        "largest_scc_size": 528,
+        "largest_scc_percentage": 46.684350132625994
+    },
+    "degree": {
+        "max_in_degree": 55,
+        "min_in_degree": 0,
+        "avg_in_degree": 3.2281167108753315,
+        "median_in_degree": 1.0,
+        "max_out_degree": 61,
+        "min_out_degree": 0,
+        "avg_out_degree": 3.2281167108753315,
+        "median_out_degree": 1.0
+    },
+    "top_teams": {
+        "top_buyers": [
+            [
+                "Retired",
+                55
+            ],
+            [
+                "Parma FC",
+                42
+            ],
+            [
+                "SL Benfica",
+                33
+            ],
+            [
+                "Genoa CFC",
+                30
+            ],
+            [
+                "Queens Park Rangers",
+                28
+            ],
+            [
+                "Tottenham Hotspur",
+                27
+            ],
+            [
+                "Granada CF",
+                27
+            ],
+            [
+                "TSG 1899 Hoffenheim",
+                26
+            ],
+            [
+                "Chelsea FC",
+                26
+            ],
+            [
+                "Robur Siena",
+                26
+            ]
+        ],
+        "top_sellers": [
+            [
+                "Parma FC",
+                61
+            ],
+            [
+                "Genoa CFC",
+                46
+            ],
+            [
+                "AC Milan",
+                43
+            ],
+            [
+                "Robur Siena",
+                43
+            ],
+            [
+                "Chievo Verona",
+                42
+            ],
+            [
+                "Udinese Calcio",
+                38
+            ],
+            [
+                "AS Roma",
+                36
+            ],
+            [
+                "US Palermo",
+                36
+            ],
+            [
+                "FC Internazionale",
+                35
+            ],
+            [
+                "Queens Park Rangers",
+                35
+            ]
+        ]
+    },
+    "centrality": {
+        "top_betweenness": [
+            [
+                "SL Benfica",
+                0.040821251722440284
+            ],
+            [
+                "Parma FC",
+                0.03378502901289265
+            ],
+            [
+                "Sporting CP",
+                0.028842518673472015
+            ],
+            [
+                "Genoa CFC",
+                0.02689537626479061
+            ],
+            [
+                "Chelsea FC",
+                0.026775811764084955
+            ],
+            [
+                "SC Braga",
+                0.026732525794975672
+            ],
+            [
+                "TSG 1899 Hoffenheim",
+                0.02649457447120344
+            ],
+            [
+                "Granada CF",
+                0.02328576699007422
+            ],
+            [
+                "Manchester City",
+                0.023226747271614976
+            ],
+            [
+                "Robur Siena",
+                0.022815946009731792
+            ]
+        ],
+        "top_eigenvector": [
+            [
+                "Genoa CFC",
+                0.24284226875469023
+            ],
+            [
+                "Retired",
+                0.22195888765626592
+            ],
+            [
+                "Parma FC",
+                0.21052661814803286
+            ],
+            [
+                "Torino FC",
+                0.18914772881498967
+            ],
+            [
+                "Robur Siena",
+                0.18491931349841975
+            ],
+            [
+                "Atalanta BC",
+                0.17772135928059316
+            ],
+            [
+                "US Palermo",
+                0.17092529381410326
+            ],
+            [
+                "Delfino Pescara 1936",
+                0.1649006210746782
+            ],
+            [
+                "SSC Napoli",
+                0.16425044550986626
+            ],
+            [
+                "Udinese Calcio",
+                0.1535027141510341
+            ]
+        ],
+        "top_pagerank": [
+            [
+                "Retired",
+                0.010271956583473883
+            ],
+            [
+                "Gil Vicente FC",
+                0.008592095775089596
+            ],
+            [
+                "Tottenham Hotspur",
+                0.008538616154959537
+            ],
+            [
+                "Reading FC",
+                0.007983195097726036
+            ],
+            [
+                "Queens Park Rangers",
+                0.007958462424073828
+            ],
+            [
+                "Parma FC",
+                0.007663447350459759
+            ],
+            [
+                "Norwich City",
+                0.007062046056610828
+            ],
+            [
+                "SL Benfica",
+                0.006869255364419659
+            ],
+            [
+                "Fortuna D\u00fcsseldorf",
+                0.006837865734569028
+            ],
+            [
+                "Southampton FC",
+                0.006618814744663367
+            ]
+        ]
+    },
+    "financial": {
+        "total_transfer_volume": 4609376000.0,
+        "avg_transfer_fee": 1262496.8501780333,
+        "top_spenders": [
+            [
+                "Delfino Pescara 1936",
+                504580000.0
+            ],
+            [
+                "AS Bari",
+                499462000.0
+            ],
+            [
+                "Vicenza Calcio",
+                493920000.0
+            ],
+            [
+                "AC Cesena",
+                492500000.0
+            ],
+            [
+                "Paris Saint-Germain",
+                146250000.0
+            ],
+            [
+                "Zenit St. Petersburg",
+                85750000.0
+            ],
+            [
+                "Chelsea FC",
+                84250000.0
+            ],
+            [
+                "Bayern Munich",
+                69800000.0
+            ],
+            [
+                "Manchester United",
+                66800000.0
+            ],
+            [
+                "Liverpool FC",
+                60150000.0
+            ]
+        ],
+        "top_income_generators": [
+            [
+                "Chievo Verona",
+                -502332000.0
+            ],
+            [
+                "AC Pisa 1909",
+                -500000000.0
+            ],
+            [
+                "Calcio Catania",
+                -494250000.0
+            ],
+            [
+                "Juventus FC",
+                -450500000.0
+            ],
+            [
+                "FC Porto",
+                -60770000.0
+            ],
+            [
+                "Genoa CFC",
+                -47520000.0
+            ],
+            [
+                "SL Benfica",
+                -43665000.0
+            ],
+            [
+                "S\u00e3o Paulo Futebol Clube",
+                -43000000.0
+            ],
+            [
+                "M\u00e1laga CF",
+                -41600000.0
+            ],
+            [
+                "Athletic Bilbao",
+                -37500000.0
+            ]
+        ]
+    },
+    "geographical": {
+        "country_distribution": {
+            "Germany": 81,
+            "Israel": 5,
+            "Austria": 5,
+            "Italy": 147,
+            "Spain": 78,
+            "France": 86,
+            "Brazil": 73,
+            "Career break": 1,
+            "United States": 13,
+            "Argentina": 17,
+            "England": 128,
+            "Switzerland": 15,
+            "Ukraine": 9,
+            "Romania": 16,
+            "Netherlands": 74,
+            "Poland": 9,
+            "Retired": 1,
+            "Japan": 8,
+            "Ban": 1,
+            "Belgium": 21,
+            "Portugal": 89,
+            "Greece": 14,
+            "Turkey": 19,
+            "Mexico": 8,
+            "Denmark": 9,
+            "Croatia": 4,
+            "Hungary": 11,
+            "China": 9,
+            "Russia": 16,
+            "Wales": 3,
+            "Scotland": 10,
+            "Qatar": 3,
+            "Saudi Arabia": 4,
+            "United Arab Emirates": 7,
+            "Slovakia": 3,
+            "Sweden": 12,
+            "Norway": 7,
+            "Bulgaria": 5,
+            "Chile": 8,
+            "Azerbaijan": 2,
+            "Ireland": 4,
+            "Paraguay": 3,
+            "Malta": 2,
+            "South Africa": 2,
+            "Kazakhstan": 1,
+            "Uruguay": 10,
+            "Slovenia": 5,
+            "Iran": 4,
+            "Belarus": 1,
+            "Venezuela": 2,
+            "Czech Republic": 7,
+            "Estonia": 1,
+            "Cyprus": 10,
+            "Colombia": 3,
+            "Australia": 4,
+            "Iceland": 2,
+            "Northern Ireland": 1,
+            "Angola": 2,
+            "Thailand": 2,
+            "Unknown": 1,
+            "Morocco": 1,
+            "Mozambique": 2,
+            "Moldova": 1,
+            "Ecuador": 2,
+            "Malaysia": 1,
+            "Gabon": 1,
+            "Bosnia-Herzegovina": 1,
+            "Tunisia": 2,
+            "Finland": 1,
+            "Neukaledonien": 1,
+            "Peru": 2,
+            "Serbia": 5,
+            "Korea, South": 2,
+            "Egypt": 2,
+            "Cameroon": 2,
+            "Ghana": 1,
+            "Singapore": 1,
+            "Algeria": 1,
+            "Montenegro": 1,
+            "Lithuania": 1,
+            "Guinea": 1,
+            "Luxembourg": 1
+        },
+        "domestic_transfers": 2222,
+        "international_transfers": 1429,
+        "domestic_percentage": 60.86003834565873,
+        "top_country_relationships": [
+            [
+                [
+                    "Brazil",
+                    "Portugal"
+                ],
+                46
+            ],
+            [
+                [
+                    "Portugal",
+                    "Brazil"
+                ],
+                41
+            ],
+            [
+                [
+                    "France",
+                    "England"
+                ],
+                28
+            ],
+            [
+                [
+                    "Spain",
+                    "England"
+                ],
+                22
+            ],
+            [
+                [
+                    "Italy",
+                    "Spain"
+                ],
+                20
+            ],
+            [
+                [
+                    "Spain",
+                    "Italy"
+                ],
+                20
+            ],
+            [
+                [
+                    "England",
+                    "Spain"
+                ],
+                20
+            ],
+            [
+                [
+                    "Portugal",
+                    "Spain"
+                ],
+                20
+            ],
+            [
+                [
+                    "Netherlands",
+                    "England"
+                ],
+                17
+            ],
+            [
+                [
+                    "Germany",
+                    "England"
+                ],
+                16
+            ]
+        ]
+    },
+    "loan_analysis": {
+        "loan_transfers": 0,
+        "permanent_transfers": 0,
+        "loan_percentage": 0.0
+    },
+    "communities": {
+        "number_of_communities": 6,
+        "largest_community_size": 266,
+        "modularity_score": 0.5639788920771321
+    },
+    "paths": "Graph is not connected, path metrics are undefined",
+    "reciprocity": {
+        "overall_reciprocity": 0.3040262941659819,
+        "edge_reciprocity": 0.3040262941659819
+    },
+    "structural": {
+        "transitivity": 0.052363920867329834,
+        "average_clustering": 0.08282880167680272
+    }
+}
